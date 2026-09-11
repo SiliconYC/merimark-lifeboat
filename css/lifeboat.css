@@ -1,7 +1,74 @@
-  .btn-clear-all {
-    flex: 0 0 76px;
+  .btn-more {
+    flex: 0 0 54px;
     background-color: #3a3a3c;
-    color: var(--danger-color);
-    transition: 0.3s;
+    color: #c7c7cc;
+    font-size: 1.35rem;
+    line-height: 1;
+    letter-spacing: 1px;
+    transition: 0.2s;
   }
+  .btn-more:active { background-color: #4a4a4c; }
+
+  .lifeboat-menu-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.48);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, visibility 0.18s;
+  }
+  .lifeboat-menu-mask.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lifeboat-menu {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 14px calc(14px + env(safe-area-inset-bottom));
+    background: #202022;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.38);
+    transform: translateY(110%);
+    visibility: hidden;
+    transition: transform 0.22s ease, visibility 0.22s;
+  }
+  .lifeboat-menu.active {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  .lifeboat-menu-handle {
+    width: 38px;
+    height: 4px;
+    margin: 0 auto 2px;
+    border-radius: 99px;
+    background: #555;
+  }
+  .lifeboat-menu button {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+  }
+  .lifeboat-menu-danger {
+    background: #342526;
+    color: #ff8b86;
+  }
+  .lifeboat-menu-danger:disabled {
+    background: #2a2a2c;
+    color: #5f5f63;
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+  .lifeboat-menu-cancel {
+    background: #3a3a3c;
+    color: #ddd;
+  }
+
   .status-bar.lifeboat-status { color: #8a6b55; }
