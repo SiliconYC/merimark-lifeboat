@@ -1,0 +1,7 @@
+  .btn-clear-all {
+    flex: 0 0 76px;
+    background-color: #3a3a3c;
+    color: var(--danger-color);
+    transition: 0.3s;
+  }
+  .status-bar.lifeboat-status { color: #8a6b55; }
