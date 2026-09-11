@@ -1,0 +1,148 @@
+  .editor-wrapper {
+    flex: 2;
+    max-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 0 16px;
+    transition: background-color 0.3s ease;
+    min-height: 0;
+    background-color: var(--color-diary-bg);
+  }
+  .editor-wrapper.theme-diary {
+    background-color: var(--color-diary-bg);
+    --theme-editor-dim: rgba(52, 152, 219, 0.28);
+    --theme-editor-bright: #3498db;
+    --theme-editor-track: rgba(52, 152, 219, 0.06);
+  }
+  .editor-wrapper.theme-note {
+    background-color: var(--color-note-bg);
+    --theme-editor-dim: rgba(26, 188, 156, 0.28);
+    --theme-editor-bright: #1abc9c;
+    --theme-editor-track: rgba(26, 188, 156, 0.06);
+  }
+  .editor-wrapper.theme-task {
+    background-color: var(--color-task-bg);
+    --theme-editor-dim: rgba(155, 89, 182, 0.28);
+    --theme-editor-bright: #9b59b6;
+    --theme-editor-track: rgba(155, 89, 182, 0.06);
+  }
+
+  html.editor-focused .editor-wrapper,
+  html:has(#inputArea:focus) .editor-wrapper {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    box-sizing: border-box;
+  }
+  html.editor-focused .list-header,
+  html.editor-focused .list-container,
+  html.editor-focused #noteList,
+  html.editor-focused .status-bar,
+  html:has(#inputArea:focus) .list-header,
+  html:has(#inputArea:focus) .list-container,
+  html:has(#inputArea:focus) #noteList,
+  html:has(#inputArea:focus) .status-bar {
+    display: none;
+  }
+
+  .mode-switch {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+  .mode-option {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    transition: 0.2s;
+  }
+  .mode-option.active { color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+  .editor-wrapper.theme-diary .mode-option.active[data-type="日记"] { background-color: var(--color-diary); }
+  .editor-wrapper.theme-note .mode-option.active[data-type="便条"] { background-color: var(--color-note); }
+  .editor-wrapper.theme-task .mode-option.active[data-type="任务"] { background-color: var(--color-task); }
+
+  .textarea-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    margin-bottom: 12px;
+  }
+
+  textarea {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--text-main);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 16px 20px 24px 16px;
+    font-size: 17px;
+    line-height: 1.5;
+    resize: none;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    transition: 0.3s;
+    overflow-y: auto;
+    overflow-anchor: none;
+    overscroll-behavior: contain;
+    touch-action: auto;
+    user-select: text;
+    -webkit-user-select: text;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  textarea::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  textarea:focus { outline: none; background-color: rgba(0, 0, 0, 0.5); }
+  .editor-wrapper.theme-diary textarea:focus { border-color: var(--color-diary); }
+  .editor-wrapper.theme-note textarea:focus { border-color: var(--color-note); }
+  .editor-wrapper.theme-task textarea:focus { border-color: var(--color-task); }
+
+  .editor-wrapper .custom-scrollbar { top: 8px; bottom: 8px; right: 6px; background: var(--theme-editor-track); }
+  .editor-wrapper .custom-scrollbar-thumb { background-color: var(--theme-editor-dim); }
+  .editor-wrapper .custom-scrollbar.is-scrolling .custom-scrollbar-thumb { background-color: var(--theme-editor-bright); box-shadow: 0 0 6px var(--theme-editor-bright); }
+
+  .btn-group { display: flex; gap: 12px; margin-bottom: 4px; height: 48px; flex-shrink: 0; }
+  button {
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  button.disabled {
+    background-color: #2a2a2c !important;
+    color: #555 !important;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    opacity: 0.7;
+  }
+  .btn-save { flex: 2; transition: 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+  .editor-wrapper.theme-diary .btn-save { background-color: var(--color-diary); }
+  .editor-wrapper.theme-note .btn-save { background-color: var(--color-note); }
+  .editor-wrapper.theme-task .btn-save { background-color: var(--color-task); }
+  .btn-sync { flex: 1; background-color: var(--color-sync); color: white; transition: 0.3s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+  .btn-cancel { flex: 1; background-color: #3a3a3c; color: var(--danger-color); display: none; }
+  .word-count-bar {
+    text-align: right;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 4px 0 8px;
+    padding-right: 4px;
+    font-family: monospace;
+    flex-shrink: 0;
+  }
