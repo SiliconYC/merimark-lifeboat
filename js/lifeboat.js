@@ -68,6 +68,14 @@
     }
   }
 
+  function performLifeboatClear() {
+    localStorage.setItem("daily_notes_cache", JSON.stringify({ active: [], recycle: [] }));
+    if (editingId !== null || document.getElementById("inputArea").value) _performCancel();
+    renderList();
+    updateLifeboatDangerState();
+    showToast("救生圈数据已清空");
+  }
+
   function clearAllLifeboatData() {
     const data = loadData();
     if (!data.active.length) {
@@ -83,17 +91,12 @@
         const randomArray = new Uint32Array(1);
         crypto.getRandomValues(randomArray);
         const code = String(100 + (randomArray[0] % 900));
-        const input = window.prompt(`第二次确认：请输入随机数字 ${code}`);
-        if (input === null) return;
-        if (input.trim() !== code) {
-          showToast("数字不匹配，未清除");
-          return;
-        }
-        localStorage.setItem("daily_notes_cache", JSON.stringify({ active: [], recycle: [] }));
-        if (editingId !== null || document.getElementById("inputArea").value) _performCancel();
-        renderList();
-        updateLifeboatDangerState();
-        showToast("救生圈数据已清空");
+        showCodeConfirm(
+          "最后确认",
+          "这是不可撤销操作。请输入下面的三位确认码。",
+          code,
+          performLifeboatClear
+        );
       }
     );
   }
