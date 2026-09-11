@@ -1,33 +1,36 @@
-const CACHE_PREFIX = "merimark-lifeboat-";
-const CACHE_NAME = `${CACHE_PREFIX}v1.0.0`;
+const CACHE_NAME = "merimark-lifeboat-v1.1.0";
 
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css",
-  "./db.js",
-  "./app.js",
   "./manifest.webmanifest",
+  "./css/base.css",
+  "./css/editor.css",
+  "./css/list.css",
+  "./css/context-menu.css",
+  "./css/modal.css",
+  "./css/lifeboat.css",
+  "./js/state-core.js",
+  "./js/state-and-markdown.js",
+  "./js/editor.js",
+  "./js/list-and-context.js",
+  "./js/modals.js",
+  "./js/lifeboat.js",
   "./icons/lifeboat.svg",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/apple-touch-icon.png",
+  "./icons/apple-touch-icon.png"
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
-  );
-  // Deliberately no skipWaiting(): an already-working version must not be
-  // interrupted while the user is writing an emergency note.
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(
-        keys
-          .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+        keys.filter((key) => key.startsWith("merimark-lifeboat-") && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())
@@ -35,32 +38,17 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  const request = event.request;
-  if (request.method !== "GET") return;
-
-  const url = new URL(request.url);
+  if (event.request.method !== "GET") return;
+  const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(request, { ignoreSearch: true }).then((cached) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cached) => {
       if (cached) return cached;
-
-      return fetch(request)
-        .then((response) => {
-          if (!response || response.status !== 200 || response.type === "opaque") {
-            return response;
-          }
-
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => {
-          if (request.mode === "navigate") {
-            return caches.match("./index.html");
-          }
-          return new Response("Offline resource unavailable", { status: 503, statusText: "Offline" });
-        });
+      return fetch(event.request).catch(() => {
+        if (event.request.mode === "navigate") return caches.match("./index.html");
+        return new Response("Offline", { status: 503 });
+      });
     })
   );
 });
