@@ -1,157 +1,109 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#231a15">
-  <meta name="color-scheme" content="dark">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="MeriMark 救生圈">
-  <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
-  <title>MeriMark · 应急救生圈</title>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-  <link rel="icon" href="./icons/lifeboat.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
-  <main class="app-shell" id="appShell">
-    <section class="lifeboat-banner" aria-labelledby="appTitle">
-      <div class="lifeboat-mark" aria-hidden="true">🛟</div>
-      <div class="lifeboat-copy">
-        <div class="title-line">
-          <h1 id="appTitle">MeriMark · 应急救生圈</h1>
-          <span class="emergency-badge">应急</span>
-        </div>
-        <p>本地临时存储 · 不会自动同步 · 不会上传日记内容</p>
-      </div>
-    </section>
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- [PWA优化] viewport: shrink-to-fit=no 防 iOS 自动缩小，viewport-fit=cover 适配刘海屏 safe area -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover"
+    />
+    <title>MeriMark 救生圈</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#121212" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <section class="status-strip" aria-label="存储状态">
-      <span class="status-pill" id="storageStatus">正在检查本��存储…</span>
-      <span class="status-pill" id="offlineStatus">正在检查离线能力…</span>
-      <span class="status-pill warning" id="exportStatus">尚未导出</span>
-    </section>
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/editor.css" />
+    <link rel="stylesheet" href="./css/list.css" />
+    <link rel="stylesheet" href="./css/context-menu.css" />
+    <link rel="stylesheet" href="./css/modal.css" />
+    <link rel="stylesheet" href="./css/lifeboat.css" />
 
-    <section class="editor-card card">
-      <div class="mode-switch" id="modeSwitch" role="tablist" aria-label="条目类型">
-        <button class="mode-option active" type="button" data-type="日记" role="tab" aria-selected="true">📝 日记</button>
-        <button class="mode-option" type="button" data-type="任务" role="tab" aria-selected="false">⚡ 任务</button>
-        <button class="mode-option" type="button" data-type="便条" role="tab" aria-selected="false">📌 便条</button>
-      </div>
-
-      <label class="sr-only" for="inputArea">条目内容</label>
-      <textarea id="inputArea" rows="8" placeholder="记录今天发生的…" autocomplete="off" autocapitalize="sentences" spellcheck="true"></textarea>
-
-      <div class="editor-meta">
-        <span id="editingLabel">新建条目</span>
-        <span id="wordCount">0 字</span>
+    <script>
+      document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+      document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
+      document.addEventListener('gestureend', function (e) { e.preventDefault(); });
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function (event) {
+        let now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) event.preventDefault();
+        lastTouchEnd = now;
+      }, { passive: false });
+    </script>
+  </head>
+  <body>
+    <div id="editorWrapper" class="editor-wrapper theme-diary">
+      <div class="mode-switch" id="modeSwitch">
+        <div class="mode-option active" data-type="日记">📝 日记</div>
+        <div class="mode-option" data-type="任务">⚡ 任务</div>
+        <div class="mode-option" data-type="便条">📌 便条</div>
       </div>
 
-      <div class="editor-actions">
-        <button class="button primary" type="button" id="btnSave">保存日记</button>
-        <button class="button secondary hidden" type="button" id="btnCancel">取消编辑</button>
-      </div>
-    </section>
-
-    <section class="export-card card">
-      <div class="section-heading">
-        <div>
-          <h2>救生出口</h2>
-          <p>把当前全部条目封装为 MeriMark Lifeboat JSON。PC 端导入成功与否，本页面无法获知。</p>
-        </div>
-        <span class="count-badge" id="totalCountBadge">0 条</span>
+      <div class="textarea-container">
+        <textarea id="inputArea" placeholder="写点什么..."></textarea>
+        <div class="custom-scrollbar" id="editorScrollbar"><div class="custom-scrollbar-thumb"></div></div>
       </div>
 
-      <div class="export-actions">
-        <button class="button accent" type="button" id="btnCopyJson">复制全部 JSON</button>
-        <button class="button secondary" type="button" id="btnDownloadJson">下载 .json</button>
+      <div class="btn-group">
+        <button class="btn-save" id="btnSave" onclick="saveNote()">保存日记</button>
+        <button class="btn-cancel" id="btnCancel" onclick="cancelEdit()">取消</button>
+        <button class="btn-sync" id="btnSync" onclick="exportAll()">导出</button>
+        <button class="btn-clear-all" id="btnClearAll" onclick="clearAllLifeboatData()">清除</button>
       </div>
+      <div class="word-count-bar" id="wordCountBar">字数: 0</div>
+    </div>
 
-      <p class="safety-note" id="exportHint">有内容后即可导出。重复导出是安全的。</p>
-    </section>
-
-    <section class="list-card card">
-      <div class="section-heading compact">
-        <div>
-          <h2 id="listTitle">日记</h2>
-          <p id="listStats">日记 0 · 任务 0 · 便条 0 · 0 字</p>
-        </div>
+    <div class="list-header" id="listHeader">
+      <div class="list-header-left">
+          待导出:
+          <span id="statDiary">日记 0</span><span class="sep">|</span>
+          <span id="statTask">任务 0</span><span class="sep">|</span>
+          <span id="statNote">便条 0</span>
       </div>
-      <div id="entryList" class="entry-list" aria-live="polite"></div>
-      <div id="emptyState" class="empty-state">
-        <strong>这里还没有内容</strong>
-        <span>上方输入后点击保存。所有内容只留在当前浏览器的本地存储。</span>
-      </div>
-    </section>
+      <div class="list-header-right"><span id="statTotalChars">0字</span></div>
+    </div>
 
-    <section class="danger-card card">
-      <div class="section-heading">
-        <div>
-          <h2>危险操作</h2>
-          <p>只有确认 PC 已经成功保存救生圈数据后才应清空。本页面不会替你判断“已经同步成功”。</p>
+    <div class="list-container">
+      <ul id="noteList"></ul>
+      <div class="custom-scrollbar" id="listScrollbar"><div class="custom-scrollbar-thumb"></div></div>
+    </div>
+    <div class="status-bar lifeboat-status" id="status">救生圈 · 本机暂存</div>
+
+    <div id="contextMask" class="context-mask" onclick="hideContextMenu()"></div>
+    <div id="contextMenu" class="context-menu">
+      <div class="context-btn context-btn-duplicate" onclick="actionDuplicate()"><i>📄</i><span>复印</span></div>
+      <div class="context-btn context-btn-copy" onclick="actionCopyClipboard()"><i>📋</i><span>复制</span></div>
+    </div>
+
+    <div id="customModal" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-title" id="modalTitle">标题</div>
+        <div class="modal-message" id="modalMessage">内容</div>
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-cancel" id="modalBtnCancel">取消</button>
+          <button class="modal-btn modal-btn-confirm" id="modalBtnConfirm">确定</button>
         </div>
       </div>
-      <button class="button danger" type="button" id="btnClearAll">清空全部本地数据</button>
-    </section>
+    </div>
 
-    <details class="install-help card">
-      <summary>iPhone 安装与离线说明</summary>
-      <div class="details-body">
-        <p>建议在一切正常时就预先安装：使用 Safari 打开本站 → 分享 → 添加到主屏幕。</p>
-        <p>首次在线打开后，Service Worker 会缓存应用外壳。以后即使主 MeriMark PWA、局域网 HTTPS 或电脑端服务不可用，救生圈仍可独立记录。</p>
-        <p>浏览器存储仍然不是绝对不可丢失的介质。重要内容请尽快“复制全部 JSON”并在 PC 端完成导入。</p>
+    <div id="logModal" class="modal-overlay">
+      <div class="log-modal-card">
+        <div class="modal-title" id="logModalTitle">详细日志</div>
+        <textarea id="logModalTextarea" class="log-textarea" readonly></textarea>
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-cancel" onclick="hideLogModal()">关闭</button>
+          <button class="modal-btn modal-btn-confirm" onclick="copyLog()">复制日志</button>
+        </div>
       </div>
-    </details>
+    </div>
 
-    <footer>
-      <span>MeriMark Lifeboat</span>
-      <span id="appVersion">v1.0.0</span>
-    </footer>
-  </main>
-
-  <div class="modal-backdrop" id="confirmModal" hidden>
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-      <h2 id="confirmTitle">确认</h2>
-      <p id="confirmMessage"></p>
-      <div class="modal-actions">
-        <button class="button secondary" type="button" id="confirmCancel">取消</button>
-        <button class="button primary" type="button" id="confirmOk">确定</button>
-      </div>
-    </section>
-  </div>
-
-  <div class="modal-backdrop" id="clearCodeModal" hidden>
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="clearCodeTitle">
-      <h2 id="clearCodeTitle">最后一次确认</h2>
-      <p>请输入下面的三位随机数字。此操作会永久删除当前浏览器内的全部救生圈条目。</p>
-      <div class="verification-code" id="clearCodeDisplay">000</div>
-      <label for="clearCodeInput">输入三位数字</label>
-      <input id="clearCodeInput" class="code-input" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off">
-      <div class="modal-actions">
-        <button class="button secondary" type="button" id="clearCodeCancel">取消</button>
-        <button class="button danger" type="button" id="clearCodeOk">永久清空</button>
-      </div>
-    </section>
-  </div>
-
-  <div class="modal-backdrop" id="manualExportModal" hidden>
-    <section class="modal wide" role="dialog" aria-modal="true" aria-labelledby="manualExportTitle">
-      <h2 id="manualExportTitle">手动复制 JSON</h2>
-      <p>系统剪贴板接口不可用。请长按或全选下方 JSON 进行复制。</p>
-      <textarea id="manualExportText" class="export-textarea" readonly></textarea>
-      <div class="modal-actions stacked-mobile">
-        <button class="button secondary" type="button" id="manualExportClose">关闭</button>
-        <button class="button accent" type="button" id="manualExportRetry">再次复制</button>
-        <button class="button primary" type="button" id="manualExportMarked">我已手动复制</button>
-      </div>
-    </section>
-  </div>
-
-  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
-
-  <script type="module" src="./app.js"></script>
-</body>
+    <script src="./js/state-core.js"></script>
+    <script src="./js/state-and-markdown.js"></script>
+    <script src="./js/editor.js"></script>
+    <script src="./js/list-and-context.js"></script>
+    <script src="./js/modals.js"></script>
+    <script src="./js/lifeboat.js"></script>
+  </body>
 </html>
