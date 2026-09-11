@@ -1,0 +1,88 @@
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 10005;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s;
+  }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+  .modal-card {
+    background-color: #252525;
+    width: 85%;
+    max-width: 320px;
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    transform: scale(0.92);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .modal-overlay.active .modal-card { transform: scale(1); }
+  .modal-title { font-size: 1.15rem; font-weight: 600; color: #fff; margin-bottom: 12px; }
+  .modal-message { font-size: 0.95rem; color: #bbb; margin-bottom: 24px; line-height: 1.5; white-space: pre-wrap; }
+  .modal-actions { display: flex; gap: 12px; }
+  .modal-btn {
+    flex: 1;
+    height: 44px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .modal-btn-cancel { background-color: #3a3a3c; color: #ccc; }
+  .modal-btn-confirm { background-color: var(--color-diary); color: #fff; }
+  .log-modal-card {
+    background-color: #1a1a1a;
+    width: 90%;
+    max-width: 480px;
+    height: 70vh;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+    transform: scale(0.92);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .modal-overlay.active .log-modal-card { transform: scale(1); }
+  .log-textarea {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #000;
+    color: #00ff00;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    resize: none;
+    box-sizing: border-box;
+    overflow-y: auto;
+    user-select: text;
+    -webkit-user-select: text;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 255, 0, 0.4) rgba(0, 255, 0, 0.08);
+  }
+  .log-textarea::-webkit-scrollbar-track { background: rgba(0, 255, 0, 0.08); }
+  .log-textarea::-webkit-scrollbar-thumb { background-color: rgba(0, 255, 0, 0.4); }
+  .log-textarea.is-scrolling { scrollbar-color: #00ff00 rgba(0, 255, 0, 0.15); }
+  .log-textarea.is-scrolling::-webkit-scrollbar-thumb,
+  .log-textarea::-webkit-scrollbar-thumb:hover,
+  .log-textarea::-webkit-scrollbar-thumb:active {
+    background-color: #00ff00;
+    box-shadow: 0 0 6px rgba(0, 255, 0, 0.6);
+  }
+  .log-textarea:focus { outline: none; border-color: #666; }
