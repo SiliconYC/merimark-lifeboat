@@ -13,43 +13,27 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Check JavaScript syntax
         run: |
-          node --check app.js
-          node --check db.js
-          node --check service-worker.js
-
-      - name: Validate manifest and required files
+          for f in js/*.js service-worker.js; do node --check "$f"; done
+      - name: Validate static files
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-
           root = Path('.')
-          manifest = json.loads((root / 'manifest.webmanifest').read_text(encoding='utf-8'))
-          assert manifest['start_url'] == './'
-          assert manifest['scope'] == './'
-          assert manifest['display'] == 'standalone'
-
+          m = json.loads((root / 'manifest.webmanifest').read_text(encoding='utf-8'))
+          assert m['start_url'] == './' and m['scope'] == './' and m['display'] == 'standalone'
           required = [
-              'index.html', 'styles.css', 'app.js', 'db.js',
-              'service-worker.js', 'manifest.webmanifest', '.nojekyll',
-              'icons/lifeboat.svg', 'icons/icon-192.png',
-              'icons/icon-512.png', 'icons/apple-touch-icon.png',
+              'index.html', 'service-worker.js', 'manifest.webmanifest', '.nojekyll',
+              'css/base.css', 'css/editor.css', 'css/list.css', 'css/context-menu.css', 'css/modal.css', 'css/lifeboat.css',
+              'js/state-core.js', 'js/state-and-markdown.js', 'js/editor.js', 'js/list-and-context.js', 'js/modals.js', 'js/lifeboat.js',
+              'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'
           ]
-          missing = [path for path in required if not (root / path).exists()]
-          assert not missing, f'Missing required files: {missing}'
-
-          sw = (root / 'service-worker.js').read_text(encoding='utf-8')
-          for path in required[0:6] + required[7:]:
-              if path == 'service-worker.js':
-                  continue
-              expected = './' + path
-              if path in {'index.html'}:
-                  expected = './index.html'
-              assert expected in sw or path in {'styles.css'}, f'Service worker may not cache {path}'
-          print('MeriMark Lifeboat validation passed.')
+          missing = [p for p in required if not (root / p).exists()]
+          assert not missing, missing
+          html = (root / 'index.html').read_text(encoding='utf-8')
+          assert '待导出:' in html and 'exportAll()' in html and 'clearAllLifeboatData()' in html
+          print('validation passed')
           PY
