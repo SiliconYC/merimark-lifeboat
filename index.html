@@ -88,6 +88,22 @@
       <div class="modal-card">
         <div class="modal-title" id="modalTitle">标题</div>
         <div class="modal-message" id="modalMessage">内容</div>
+        <div class="modal-code-field" id="modalCodeField" hidden>
+          <div class="modal-code-label">确认码</div>
+          <div class="modal-code-value" id="modalCodeValue">000</div>
+          <input
+            id="modalCodeInput"
+            class="modal-code-input"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="3"
+            autocomplete="off"
+            aria-label="输入三位确认码"
+            placeholder="输入上方三位数字"
+          />
+          <div class="modal-code-hint">输入完全一致后才能清除</div>
+        </div>
         <div class="modal-actions">
           <button class="modal-btn modal-btn-cancel" id="modalBtnCancel">取消</button>
           <button class="modal-btn modal-btn-confirm" id="modalBtnConfirm">确定</button>
