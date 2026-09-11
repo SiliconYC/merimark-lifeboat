@@ -6,10 +6,10 @@
     const wrapper = document.getElementById("editorWrapper");
     wrapper.classList.remove("theme-diary", "theme-note", "theme-task");
     const settings = {
-      "日记": ["theme-diary", "保存日记", "记录今天发生的..."],
-      "任务": ["theme-task", "保存任务", "首行为任务标题，\n下面是任务详情..."],
-      "便条": ["theme-note", "保存便条", "备忘内容..."],
-    }[type] || ["theme-note", "保存便条", "备忘内容..."];
+      "日记": ["theme-diary", "保存日记", "🛟 MeriMark 应急救生圈\n仅在主 PWA 无法使用时记录日记…"],
+      "任务": ["theme-task", "保存任务", "🛟 MeriMark 应急救生圈\n仅在主 PWA 无法使用时记录任务…"],
+      "便条": ["theme-note", "保存便条", "🛟 MeriMark 应急救生圈\n仅在主 PWA 无法使用时记录便条…"],
+    }[type] || ["theme-note", "保存便条", "🛟 MeriMark 应急救生圈\n仅在主 PWA 无法使用时记录内容…"];
     wrapper.classList.add(settings[0]);
 
     const themePalettes = {
@@ -128,14 +128,15 @@
     const btnSave = document.getElementById("btnSave");
     const btnCancel = document.getElementById("btnCancel");
     const btnSync = document.getElementById("btnSync");
-    const btnClearAll = document.getElementById("btnClearAll");
+    const btnMore = document.getElementById("btnMore");
     btnSave.style.display = showEditTools ? "" : "none";
     btnCancel.style.display = showEditTools ? "block" : "none";
     btnSync.style.display = showEditTools ? "none" : "";
-    if (btnClearAll) btnClearAll.style.display = showEditTools ? "none" : "";
+    if (btnMore) btnMore.style.display = showEditTools ? "none" : "";
     if (!showEditTools) {
       const count = loadData().active.length;
       btnSync.innerText = count ? `导出 (${count})` : "导出";
       btnSync.classList.toggle("disabled", !count);
     }
+    if (window.updateLifeboatDangerState) window.updateLifeboatDangerState();
   }
