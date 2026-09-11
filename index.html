@@ -42,7 +42,7 @@
       </div>
 
       <div class="textarea-container">
-        <textarea id="inputArea" placeholder="写点什么..."></textarea>
+        <textarea id="inputArea" placeholder="🛟 MeriMark 应急救生圈&#10;仅在主 PWA 无法使用时记录内容…"></textarea>
         <div class="custom-scrollbar" id="editorScrollbar"><div class="custom-scrollbar-thumb"></div></div>
       </div>
 
@@ -50,7 +50,7 @@
         <button class="btn-save" id="btnSave" onclick="saveNote()">保存日记</button>
         <button class="btn-cancel" id="btnCancel" onclick="cancelEdit()">取消</button>
         <button class="btn-sync" id="btnSync" onclick="exportAll()">导出</button>
-        <button class="btn-clear-all" id="btnClearAll" onclick="clearAllLifeboatData()">清除</button>
+        <button class="btn-more" id="btnMore" onclick="showLifeboatMenu()" aria-label="更多操作" aria-haspopup="dialog">…</button>
       </div>
       <div class="word-count-bar" id="wordCountBar">字数: 0</div>
     </div>
@@ -70,6 +70,13 @@
       <div class="custom-scrollbar" id="listScrollbar"><div class="custom-scrollbar-thumb"></div></div>
     </div>
     <div class="status-bar lifeboat-status" id="status">救生圈 · 本机暂存</div>
+
+    <div id="lifeboatMenuMask" class="lifeboat-menu-mask" onclick="hideLifeboatMenu()"></div>
+    <div id="lifeboatMenu" class="lifeboat-menu" role="dialog" aria-modal="true" aria-label="更多操作" aria-hidden="true">
+      <div class="lifeboat-menu-handle" aria-hidden="true"></div>
+      <button class="lifeboat-menu-danger" id="btnClearAll" onclick="clearAllLifeboatData()">清除全部本地内容</button>
+      <button class="lifeboat-menu-cancel" onclick="hideLifeboatMenu()">取消</button>
+    </div>
 
     <div id="contextMask" class="context-mask" onclick="hideContextMenu()"></div>
     <div id="contextMenu" class="context-menu">
