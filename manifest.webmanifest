@@ -1,14 +1,14 @@
 {
   "name": "MeriMark · 应急救生圈",
   "short_name": "MeriMark 救生圈",
-  "description": "MeriMark 主 PWA 无法使用时的本地应急记录工具。数据只保存在当前设备，需人工导出 JSON。",
-  "lang": "zh-Hant",
+  "description": "MeriMark 主 PWA 无法使用时的应急记录工具。",
+  "lang": "zh-Hans",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#191512",
-  "theme_color": "#231a15",
+  "background_color": "#121212",
+  "theme_color": "#121212",
   "icons": [
     {"src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
     {"src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
