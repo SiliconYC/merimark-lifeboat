@@ -38,11 +38,9 @@
   html.editor-focused .list-header,
   html.editor-focused .list-container,
   html.editor-focused #noteList,
-  html.editor-focused .status-bar,
   html:has(#inputArea:focus) .list-header,
   html:has(#inputArea:focus) .list-container,
-  html:has(#inputArea:focus) #noteList,
-  html:has(#inputArea:focus) .status-bar {
+  html:has(#inputArea:focus) #noteList {
     display: none;
   }
 
