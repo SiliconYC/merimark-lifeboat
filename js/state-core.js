@@ -133,6 +133,9 @@
       root.style.setProperty("--app-viewport-height", `${Math.round(height)}px`);
       root.classList.toggle("viewport-offset", top >= 1);
 
+      const keyboardVisible = document.activeElement === ta && largestViewportHeight - height > 80;
+      root.classList.toggle("keyboard-visible", keyboardVisible);
+
       if (window.scrollX !== 0 || window.scrollY !== 0) window.scrollTo(0, 0);
       if (document.activeElement === ta) {
         root.classList.add("editor-focused");
@@ -170,7 +173,7 @@
       blurTimer = setTimeout(() => {
         blurTimer = null;
         if (document.activeElement === ta) return;
-        root.classList.remove("editor-focused");
+        root.classList.remove("editor-focused", "keyboard-visible");
         requestViewportSync();
       }, 450);
     };
