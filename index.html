@@ -20,8 +20,13 @@
     <link rel="stylesheet" href="./css/context-menu.css" />
     <link rel="stylesheet" href="./css/modal.css" />
     <link rel="stylesheet" href="./css/lifeboat.css" />
+    <link rel="stylesheet" href="./css/pwa-safe-area.css" />
 
     <script>
+      if (window.navigator.standalone === true) {
+        document.documentElement.classList.add('ios-standalone');
+      }
+
       document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
       document.addEventListener('gesturechange', function (e) { e.preventDefault(); });
       document.addEventListener('gestureend', function (e) { e.preventDefault(); });
