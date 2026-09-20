@@ -1,6 +1,6 @@
   .editor-wrapper {
-    flex: 0 0 auto;
-    max-height: none;
+    flex: 2;
+    max-height: 55vh;
     display: flex;
     flex-direction: column;
     padding: 16px 16px 0 16px;
@@ -27,8 +27,6 @@
     --theme-editor-track: rgba(155, 89, 182, 0.06);
   }
 
-  /* 默认保持紧凑；一旦进入编辑态就保持全屏，直到 textarea 真正失焦。
-     仅收起软键盘不会结束编辑态。 */
   html.editor-focused .editor-wrapper,
   html:has(#inputArea:focus) .editor-wrapper {
     flex: 1 1 auto;
@@ -44,12 +42,6 @@
   html:has(#inputArea:focus) .list-container,
   html:has(#inputArea:focus) #noteList {
     display: none;
-  }
-
-  html.editor-focused .textarea-container,
-  html:has(#inputArea:focus) .textarea-container {
-    flex: 1 1 auto;
-    height: auto;
   }
 
   /* 只有软键盘真正占据 visual viewport 时才收起编辑辅助控件。
@@ -88,8 +80,7 @@
 
   .textarea-container {
     position: relative;
-    flex: 0 0 clamp(108px, 13vh, 132px);
-    height: clamp(108px, 13vh, 132px);
+    flex: 1;
     display: flex;
     min-height: 0;
     margin-bottom: 12px;
