@@ -1,6 +1,6 @@
   .editor-wrapper {
-    flex: 2;
-    max-height: 55vh;
+    flex: 0 0 auto;
+    max-height: none;
     display: flex;
     flex-direction: column;
     padding: 16px 16px 0 16px;
@@ -27,20 +27,17 @@
     --theme-editor-track: rgba(155, 89, 182, 0.06);
   }
 
-  html.editor-focused .editor-wrapper,
-  html:has(#inputArea:focus) .editor-wrapper {
+  /* 默认保持紧凑；只有 iOS 软键盘真正占据 visual viewport 时才展开为全屏编辑。 */
+  html.keyboard-visible .editor-wrapper {
     flex: 1 1 auto;
     width: 100%;
     height: 100%;
     max-height: none;
     box-sizing: border-box;
   }
-  html.editor-focused .list-header,
-  html.editor-focused .list-container,
-  html.editor-focused #noteList,
-  html:has(#inputArea:focus) .list-header,
-  html:has(#inputArea:focus) .list-container,
-  html:has(#inputArea:focus) #noteList {
+  html.keyboard-visible .list-header,
+  html.keyboard-visible .list-container,
+  html.keyboard-visible #noteList {
     display: none;
   }
 
@@ -52,6 +49,8 @@
   }
 
   html.keyboard-visible .textarea-container {
+    flex: 1 1 auto;
+    height: auto;
     margin-bottom: 10px;
   }
 
@@ -80,7 +79,8 @@
 
   .textarea-container {
     position: relative;
-    flex: 1;
+    flex: 0 0 clamp(108px, 13vh, 132px);
+    height: clamp(108px, 13vh, 132px);
     display: flex;
     min-height: 0;
     margin-bottom: 12px;
