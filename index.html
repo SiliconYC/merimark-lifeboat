@@ -79,8 +79,31 @@
     <div id="lifeboatMenuMask" class="lifeboat-menu-mask" onclick="hideLifeboatMenu()"></div>
     <div id="lifeboatMenu" class="lifeboat-menu" role="dialog" aria-modal="true" aria-label="更多操作" aria-hidden="true">
       <div class="lifeboat-menu-handle" aria-hidden="true"></div>
+      <button class="lifeboat-menu-import" id="btnImportBackup" onclick="showImportBackup()">导入备份</button>
       <button class="lifeboat-menu-danger" id="btnClearAll" onclick="clearAllLifeboatData()">清除全部本地内容</button>
       <button class="lifeboat-menu-cancel" onclick="hideLifeboatMenu()">取消</button>
+    </div>
+
+    <div id="importBackupModal" class="modal-overlay" aria-hidden="true">
+      <div class="import-backup-card" role="dialog" aria-modal="true" aria-labelledby="importBackupTitle">
+        <div class="modal-title" id="importBackupTitle">导入 Lifeboat 备份</div>
+        <div class="import-backup-message">仅可恢复到当前完全为空的救生圈。请粘贴 Safari 中“导出”得到的完整 JSON。</div>
+        <textarea
+          id="importBackupTextarea"
+          class="import-backup-textarea"
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+          autocorrect="off"
+          placeholder="在这里粘贴 MeriMark Lifeboat JSON…"
+          aria-label="Lifeboat 备份 JSON"
+        ></textarea>
+        <div class="import-backup-status" id="importBackupStatus" aria-live="polite"></div>
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-cancel" onclick="hideImportBackup()">取消</button>
+          <button class="modal-btn modal-btn-confirm" id="btnConfirmImportBackup" onclick="prepareImportBackup()">检查并恢复</button>
+        </div>
+      </div>
     </div>
 
     <div id="contextMask" class="context-mask" onclick="hideContextMenu()"></div>
