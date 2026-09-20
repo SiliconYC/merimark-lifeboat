@@ -247,7 +247,7 @@
 
   function clearAllLifeboatData() {
     const data = loadData();
-    if (!data.active.length) {
+    if (isLifeboatDataEmpty(data)) {
       updateLifeboatDangerState();
       return;
     }
