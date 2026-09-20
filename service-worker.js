@@ -1,4 +1,4 @@
-const CACHE_NAME = "merimark-lifeboat-v1.1.3";
+const CACHE_NAME = "merimark-lifeboat-v1.1.4";
 
 const APP_SHELL = [
   "./",
@@ -10,6 +10,7 @@ const APP_SHELL = [
   "./css/context-menu.css",
   "./css/modal.css",
   "./css/lifeboat.css",
+  "./css/pwa-safe-area.css",
   "./js/state-core.js",
   "./js/state-and-markdown.js",
   "./js/editor.js",
