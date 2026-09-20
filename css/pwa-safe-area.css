@@ -1,0 +1,26 @@
+/*
+ * iOS / installed PWA safe-area adapter.
+ *
+ * This file is intentionally presentation-only: it must never read, write,
+ * migrate, or clear MeriMark local data.
+ *
+ * viewport-fit=cover lets the app background extend beneath iOS system UI.
+ * The rules below move interactive content back inside the safe area only
+ * when the site is running as an installed standalone app.
+ */
+@supports (padding-top: env(safe-area-inset-top)) {
+  @media (display-mode: standalone) {
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+  }
+
+  /* iOS compatibility fallback for Home Screen Web Apps. */
+  html.ios-standalone body {
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
