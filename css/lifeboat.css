@@ -110,8 +110,9 @@
   .import-backup-textarea {
     display: block;
     width: 100%;
-    min-height: 220px;
-    flex: 1 1 280px;
+    height: min(40vh, 320px);
+    min-height: 180px;
+    flex: 0 1 auto;
     box-sizing: border-box;
     margin: 0 0 10px;
     padding: 12px;
