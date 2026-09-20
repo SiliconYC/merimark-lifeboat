@@ -44,6 +44,17 @@
     display: none;
   }
 
+  /* 只有软键盘真正占据 visual viewport 时才收起编辑辅助控件。
+     单纯 focus（例如硬件键盘）不会触发此模式。 */
+  html.keyboard-visible .editor-wrapper .btn-group,
+  html.keyboard-visible .editor-wrapper .word-count-bar {
+    display: none !important;
+  }
+
+  html.keyboard-visible .textarea-container {
+    margin-bottom: 10px;
+  }
+
   .mode-switch {
     display: flex;
     background: rgba(0, 0, 0, 0.3);
