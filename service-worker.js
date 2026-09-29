@@ -1,4 +1,4 @@
-const CACHE_NAME = "merimark-lifeboat-v1.1.10";
+const CACHE_NAME = "merimark-lifeboat-v1.1.11";
 
 const APP_SHELL = [
   "./",
@@ -17,6 +17,7 @@ const APP_SHELL = [
   "./js/list-and-context.js",
   "./js/modals.js",
   "./js/lifeboat.js",
+  "./js/draft-safety-v1.1.11.js",
   "./icons/lifeboat.svg",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -49,6 +50,21 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
+    event.respondWith(
+      fetch(request, { cache: "no-store" })
+        .then((response) => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request, { ignoreSearch: true }))
+    );
+    return;
+  }
 
   if (request.mode === "navigate") {
     event.respondWith(
